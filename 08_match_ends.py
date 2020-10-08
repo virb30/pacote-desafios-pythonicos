@@ -8,9 +8,17 @@ e o último caracteres da cadeia são os mesmos.
 PS: Python não possui o operador ++, porém += funciona.
 """
 
+
 def match_ends(words):
-    # +++ SUA SOLUÇÃO +++
-    return
+    return len([word for word in words if len(word) >= 2 and word[0] == word[-1]])
+
+
+def count_words(words):
+    count = 0
+    for word in words:
+        if len(word) >= 2 and word[0] == word[-1]:
+            count += 1
+    return count
 
 
 # --- Daqui para baixo são apenas códigos auxiliáries de teste. ---
@@ -34,6 +42,12 @@ def test(f, in_, expected):
 
 if __name__ == '__main__':
     # Testes que verificam o resultado do seu código em alguns cenários.
+    print('match_ends')
     test(match_ends, ['aba', 'xyz', 'aa', 'x', 'bbb'], 3)
     test(match_ends, ['', 'x', 'xy', 'xyx', 'xx'], 2)
     test(match_ends, ['aaa', 'be', 'abc', 'hello'], 1)
+
+    print('count_words')
+    test(count_words, ['aba', 'xyz', 'aa', 'x', 'bbb'], 3)
+    test(count_words, ['', 'x', 'xy', 'xyx', 'xx'], 2)
+    test(count_words, ['aaa', 'be', 'abc', 'hello'], 1)
