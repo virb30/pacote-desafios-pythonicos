@@ -13,6 +13,7 @@ Dica: s.replace(stra, strb) retorna uma versão da string s
 onde todas as instancias de stra foram substituidas por strb.
 """
 
+
 def fix_start(s):
     # +++ SUA SOLUÇÃO +++
     first = s[0]
