@@ -11,9 +11,30 @@ Dica: Isso pode ser resolvido criando 2 listas e ordenando cada uma
 antes de combina-las.
 """
 
+
+import functools
+
+
 def front_x(words):
-    # +++ SUA SOLUÇÃO +++
-    return
+    words_startswith_x = [word for word in words if word.startswith('x')]
+    words_not_startswith_x = [word for word in words if not word.startswith('x')]
+    words_startswith_x.sort()
+    words_not_startswith_x.sort()
+    return words_startswith_x + words_not_startswith_x
+
+
+def front_x_cmp(words):
+    return sorted(words, key=functools.cmp_to_key(order_function))
+
+
+def order_function(next_, current):
+    if next_.startswith('x'):
+        return -1
+    if next_ < current and not current.startswith('x'):
+        return -1
+    return 1
+
+
 
 
 # --- Daqui para baixo são apenas códigos auxiliáries de teste. ---
@@ -42,4 +63,12 @@ if __name__ == '__main__':
     test(front_x, ['ccc', 'bbb', 'aaa', 'xcc', 'xaa'],
          ['xaa', 'xcc', 'aaa', 'bbb', 'ccc'])
     test(front_x, ['mix', 'xyz', 'apple', 'xanadu', 'aardvark'],
+         ['xanadu', 'xyz', 'aardvark', 'apple', 'mix'])
+
+    print('Overriding sort function')
+    test(front_x_cmp, ['bbb', 'ccc', 'axx', 'xzz', 'xaa'],
+         ['xaa', 'xzz', 'axx', 'bbb', 'ccc'])
+    test(front_x_cmp, ['ccc', 'bbb', 'aaa', 'xcc', 'xaa'],
+         ['xaa', 'xcc', 'aaa', 'bbb', 'ccc'])
+    test(front_x_cmp, ['mix', 'xyz', 'apple', 'xanadu', 'aardvark'],
          ['xanadu', 'xyz', 'aardvark', 'apple', 'mix'])
