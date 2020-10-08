@@ -15,7 +15,6 @@ onde todas as instancias de stra foram substituidas por strb.
 
 
 def fix_start(s):
-    # +++ SUA SOLUÇÃO +++
     first = s[0]
     return ''.join(['*' if char == first and i != 0 else char for i, char in enumerate(s)])
     # word = s[1:]
