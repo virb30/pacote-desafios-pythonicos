@@ -54,23 +54,29 @@ e conferindo cada etapa do seu progresso.
 import sys
 
 
-# +++ SUA SOLUÇÃO +++
+TOP_LIMIT = 20
+
 # Defina as funções print_words(filename) e print_top(filename).
 def print_words(filename):
-    with open(filename) as file:
-        content = file.read()
-    word_counter = count_words(content)
-    for word, total in word_counter.items():
-        print(word, total)
+    file_content = read_content(filename)
+    word_counter = count_words(file_content)
+    print('\n'.join(f'{word} {total}' for word, total in word_counter))
 
 
 def print_top(filename):
+    file_content = read_content(filename)
+    word_counter = count_words(file_content)
+    word_counter.sort(key=sort_top_20, reverse=True)
+    print('\n'.join(f'{word} {total}' for word, total in word_counter[:TOP_LIMIT]))
+
+
+def read_content(filename):
     with open(filename) as file:
-        content = file.read()
-    word_counter = count_words(content)
-    sorted(word_counter)
-    for word, total in word_counter.items():
-        print(word, total)
+        return file.read()
+
+
+def sort_top_20(item):
+    return item[1]
 
 
 def count_words(content):
@@ -78,7 +84,7 @@ def count_words(content):
     words = content.lower().split()
     for word in words:
         word_counter[word] = (word_counter.get(word) if word_counter.get(word) else 0) + 1
-    return word_counter
+    return list(word_counter.items())
 
 # A função abaixo chama print_words() ou print_top() de acordo com os
 # parêtros do programa.
