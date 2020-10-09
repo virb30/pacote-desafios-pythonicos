@@ -44,15 +44,11 @@ import sys
 from collections import defaultdict
 import re
 
+
 def mimic_dict(filename):
     """Retorna o dicionario imitador mapeando cada palavra para a lista de palavras subsequentes."""
     content = read_content(filename)
-    words = content.upper().split()
-    word_dict = defaultdict(list)
-    word_dict[''] = [words[0]]
-    word_dict[words[-1]].append('')
-    for current, next_ in zip(words[:-1], words[1:]):
-        word_dict[current].append(next_)
+    word_dict = extract_words(content)
     return word_dict
 
 
@@ -62,14 +58,23 @@ def read_content(filename):
     return re.sub(r'[^a-zA-Z_\s]+', '', content)
 
 
-def print_mimic(mimic_dict, word):
+def extract_words(text):
+    words = text.upper().split()
+    word_dict = defaultdict(list)
+    word_dict[''] = [words[0]]
+    word_dict[words[-1]].append('')
+    for current, next_ in zip(words[:-1], words[1:]):
+        word_dict[current].append(next_)
+    return word_dict
+
+
+def print_mimic(mimic_dict_, word):
     """Dado o dicionario imitador e a palavra inicial, imprime texto de 200 palavras."""
     text = []
-    for _ in range(200):
-        word = random.choice(mimic_dict.get(word))
+    while len(text) < 200:
+        word = random.choice(mimic_dict_.get(word))
         text.append(word)
     print(' '.join(text))
-    return
 
 
 # Chama mimic_dict() e print_mimic()
@@ -78,8 +83,8 @@ def main():
         print('Utilização: ./14_mimic.py file-to-read')
         sys.exit(1)
 
-    dict = mimic_dict(sys.argv[1])
-    print_mimic(dict, '')
+    word_dict = mimic_dict(sys.argv[1])
+    print_mimic(word_dict, '')
 
 
 if __name__ == '__main__':
