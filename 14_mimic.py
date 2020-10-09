@@ -68,13 +68,22 @@ def extract_words(text):
     return word_dict
 
 
-def print_mimic(mimic_dict_, word):
+def print_mimic(mimic_dict_, word, text=[]):
     """Dado o dicionario imitador e a palavra inicial, imprime texto de 200 palavras."""
-    text = []
-    while len(text) < 200:
-        word = random.choice(mimic_dict_.get(word))
-        text.append(word)
-    print(' '.join(text))
+    if len(text) == 200:
+        print(' '.join(text))
+        return
+    random_word = random.choice(mimic_dict_.get(word))
+    text.append(random_word)
+    print_mimic(mimic_dict_, random_word, text)
+    return text
+
+    # Solução direta
+    # text = []
+    # while len(text) < 200:
+    #     word = random.choice(mimic_dict_.get(word))
+    #     text.append(word)
+    # print(' '.join(text))
 
 
 # Chama mimic_dict() e print_mimic()
