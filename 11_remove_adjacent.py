@@ -8,9 +8,24 @@ Exemplo: [1, 2, 2, 3]
 Irá retornar: [1, 2, 3]
 """
 
+
 def remove_adjacent(nums):
-    # +++ SUA SOLUÇÃO +++
-    return
+    if not nums:
+        return []
+
+    result = [nums[0]]
+
+    pairs = zip(nums[:-1], nums[1:])
+    for c, n in pairs:
+        if c != n:
+            result.append(n)
+    return result
+
+
+def one_line_solution(nums):
+    if not nums:
+        return []
+    return [nums[0]] + [n for c, n in zip(nums[:-1], nums[1:]) if c != n]
 
 
 # --- Daqui para baixo são apenas códigos auxiliáries de teste. ---
@@ -38,3 +53,8 @@ if __name__ == '__main__':
     test(remove_adjacent, [2, 2, 3, 3, 3], [2, 3])
     test(remove_adjacent, [], [])
     test(remove_adjacent, [2, 2, 3, 3, 3, 2, 2], [2, 3, 2])
+    print('One Line solution')
+    test(one_line_solution, [1, 2, 2, 3], [1, 2, 3])
+    test(one_line_solution, [2, 2, 3, 3, 3], [2, 3])
+    test(one_line_solution, [], [])
+    test(one_line_solution, [2, 2, 3, 3, 3, 2, 2], [2, 3, 2])
