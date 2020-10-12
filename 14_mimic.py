@@ -47,43 +47,53 @@ import re
 
 def mimic_dict(filename):
     """Retorna o dicionario imitador mapeando cada palavra para a lista de palavras subsequentes."""
-    content = read_content(filename)
-    word_dict = extract_words(content)
+    words = read_content(filename)
+    word_dict = get_dict(words)
     return word_dict
 
 
 def read_content(filename):
     with open(filename) as file:
-        content = file.read()
-    return re.sub(r'[^a-zA-Z_\s]+', '', content)
+        content = file.read().lower().replace('\n', ' ').split()
+    return content
 
 
-def extract_words(text):
-    words = text.upper().split()
-    word_dict = defaultdict(list)
-    word_dict[''] = [words[0]]
-    word_dict[words[-1]].append('')
-    for current, next_ in zip(words[:-1], words[1:]):
-        word_dict[current].append(next_)
-    return word_dict
+def get_dict(words):
+    d = defaultdict(list)
+    d[''] = [words[0]]
+    d[words[-1]] = ['']
+    for i, word in enumerate(words[:-1]):
+        d[word].append(words[i-1])
+        d[word].append(words[i - 1])
+    return d
 
 
 def print_mimic(mimic_dict_, word, text=[]):
     """Dado o dicionario imitador e a palavra inicial, imprime texto de 200 palavras."""
-    if len(text) == 200:
-        print(' '.join(text))
-        return
-    random_word = random.choice(mimic_dict_.get(word))
-    text.append(random_word)
-    print_mimic(mimic_dict_, random_word, text)
-    return text
+    # if len(text) == 200:
+    #     print(' '.join(text))
+    #     return
+    # random_word = random.choice(mimic_dict_.get(word))
+    # text.append(random_word)
+    # print_mimic(mimic_dict_, random_word, text)
+    # return text
 
     # Solução direta
-    # text = []
-    # while len(text) < 200:
-    #     word = random.choice(mimic_dict_.get(word))
-    #     text.append(word)
-    # print(' '.join(text))
+    text = word
+    for _ in range(200):
+        word = random.choice(mimic_dict_.get(word))
+        text = ' '.join([text, word])
+    print(text)
+
+
+MAX_SIZE = 200
+
+
+def print_word(d, word, size=0):
+    next_ = random.choice(d.get(word))
+    print(next_, end=' ')
+    if size < MAX_SIZE:
+        print_word(d, next_, size + 1)
 
 
 # Chama mimic_dict() e print_mimic()
@@ -94,6 +104,9 @@ def main():
 
     word_dict = mimic_dict(sys.argv[1])
     print_mimic(word_dict, '')
+    print('\nRecursivo:\n')
+    print_word(word_dict, '')
+
 
 
 if __name__ == '__main__':
